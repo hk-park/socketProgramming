@@ -4,15 +4,16 @@
 #include <string.h>
  
 #define PORT 9000
- 
-char buffer[BUFSIZ] = "hello, world";
- 
+#define BUFSIZE 100
+char buffer[BUFSIZE] = "hello, I'm server";
+char rcvBuffer[BUFSIZE];
 main( )
 {
 	int   c_socket, s_socket;
 	struct sockaddr_in s_addr, c_addr;
 	int   len;
 	int   n;
+	int readSize;
  	s_socket = socket(PF_INET, SOCK_STREAM, 0);
 	
 	memset(&s_addr, 0, sizeof(s_addr));
@@ -34,6 +35,10 @@ main( )
 		len = sizeof(c_addr);
 		c_socket = accept(s_socket, (struct sockaddr *) &c_addr, &len);
 		printf("Client is Connected\n");
+		if((readSize = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
+               	 return -1;
+        	}
+		printf("Received Data From Client: %s\n", rcvBuffer);
 		n = strlen(buffer);
 		write(c_socket, buffer, n);
 		close(c_socket);
