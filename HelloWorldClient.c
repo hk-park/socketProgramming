@@ -34,7 +34,7 @@ main( )
 	
 	rcvBuffer[n] = '\0';
 	printf("received Data : %s\n", rcvBuffer);
-	
+	printf("received Data Size: %d\n", strlen(rcvBuffer));	
 	close(c_socket);
 }
 
