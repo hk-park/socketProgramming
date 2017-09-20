@@ -15,7 +15,7 @@ main( )
 	int	n;
 	
 	char	rcvBuffer[BUFSIZE];
-	char sendBuffer[BUFSIZE]= "Hi, I'm Client";
+	char sendBuffer[BUFSIZE];
 	c_socket = socket(PF_INET, SOCK_STREAM, 0);
 	
 	memset(&c_addr, 0, sizeof(c_addr));
@@ -30,6 +30,10 @@ main( )
 	}
 	printf("Connected!!\n");
 	sleep(SLEEPTIME);
+	printf("Input your message\n");
+	//scanf("%s", sendBuffer);  //scanf는 공백 문자가 포함된 문자열을 인식하지 못하므로, scanf보다는 fgetsfmf 사용을 추천한다.
+	fgets(sendBuffer, BUFSIZE, stdin);
+	sendBuffer[strlen(sendBuffer)-1] = '\0';
 	write(c_socket, sendBuffer, strlen(sendBuffer));
 	printf("<%s> is sent.\n", sendBuffer);
 	if((n = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {

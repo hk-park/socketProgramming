@@ -43,8 +43,10 @@ main( )
 		printf("Received Data From Client: %s\n", rcvBuffer);
 		n = strlen(buffer);
 		sleep(SLEEPTIME);
-		write(c_socket, buffer, n);
-		printf("Send Data: %s\n", buffer);
+		//write(c_socket, buffer, n);
+		//printf("Send Data: %s\n", buffer);
+		write(c_socket, rcvBuffer, strlen(rcvBuffer));
+		printf("Send Data: %s\n", rcvBuffer);;
 		close(c_socket);
 	}	
 	close(s_socket);
