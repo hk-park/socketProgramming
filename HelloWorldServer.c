@@ -2,9 +2,11 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <string.h>
+#include <unistd.h>
  
 #define PORT 9000
 #define BUFSIZE 100
+#define SLEEPTIME 10
 char buffer[BUFSIZE] = "hello, I'm server";
 char rcvBuffer[BUFSIZE];
 main( )
@@ -40,7 +42,9 @@ main( )
         	}
 		printf("Received Data From Client: %s\n", rcvBuffer);
 		n = strlen(buffer);
+		sleep(SLEEPTIME);
 		write(c_socket, buffer, n);
+		printf("Send Data: %s\n", buffer);
 		close(c_socket);
 	}	
 	close(s_socket);

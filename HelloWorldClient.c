@@ -2,10 +2,11 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <string.h>
-
+#include <unistd.h> //sleep() 함수를 사용하기 위한 헤더 파일
 #define PORT 9000
 #define IPADDR "127.0.0.1"
 #define BUFSIZE 100
+#define SLEEPTIME 10 //단계별로 10초 쉬었다가 다음 단계로 이동하도록 설정
 main( )
 {
 	int	c_socket;
@@ -27,7 +28,10 @@ main( )
 		close(c_socket);
 		return -1;
 	}
-	write(c_socket, sendBuffer, strlen(sendBuffer));	
+	printf("Connected!!\n");
+	sleep(SLEEPTIME);
+	write(c_socket, sendBuffer, strlen(sendBuffer));
+	printf("<%s> is sent.\n", sendBuffer);
 	if((n = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
 		return (-1);
 	}
