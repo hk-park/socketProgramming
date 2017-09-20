@@ -5,7 +5,7 @@
 
 #define PORT 9000
 #define IPADDR "127.0.0.1"
-
+#define BUFSIZE 100
 main( )
 {
 	int	c_socket;
@@ -13,8 +13,8 @@ main( )
 	int	len;
 	int	n;
 	
-	char	rcvBuffer[BUFSIZ];
-	
+	char	rcvBuffer[BUFSIZE];
+	char sendBuffer[BUFSIZE]= "Hi, I'm Client";
 	c_socket = socket(PF_INET, SOCK_STREAM, 0);
 	
 	memset(&c_addr, 0, sizeof(c_addr));
@@ -27,7 +27,7 @@ main( )
 		close(c_socket);
 		return -1;
 	}
-	
+	write(c_socket, sendBuffer, strlen(sendBuffer));	
 	if((n = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
 		return (-1);
 	}
