@@ -43,6 +43,9 @@ main( )
                	 	return -1;
         		}
 			printf("Received Data From Client: %s\n", rcvBuffer);
+			if(strncmp(rcvBuffer, "quit", 4) == 0){
+				break;
+			}
 			n = strlen(buffer);
 			sleep(SLEEPTIME);
 			//write(c_socket, buffer, n);

@@ -37,6 +37,9 @@ main( )
 		sendBuffer[strlen(sendBuffer)-1] = '\0';
 		write(c_socket, sendBuffer, strlen(sendBuffer));
 		printf("<%s> is sent.\n", sendBuffer);
+		if(strncmp(sendBuffer, "quit", 4) == 0){
+			break;
+		}
 		if((n = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
 			return (-1);
 		}
