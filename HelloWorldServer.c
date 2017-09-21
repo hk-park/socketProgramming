@@ -6,7 +6,7 @@
  
 #define PORT 9000
 #define BUFSIZE 100
-#define SLEEPTIME 10
+#define SLEEPTIME 1
 char buffer[BUFSIZE] = "hello, I'm server";
 char rcvBuffer[BUFSIZE];
 main( )
@@ -37,16 +37,19 @@ main( )
 		len = sizeof(c_addr);
 		c_socket = accept(s_socket, (struct sockaddr *) &c_addr, &len);
 		printf("Client is Connected\n");
-		if((readSize = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
-               	 return -1;
-        	}
-		printf("Received Data From Client: %s\n", rcvBuffer);
-		n = strlen(buffer);
-		sleep(SLEEPTIME);
-		//write(c_socket, buffer, n);
-		//printf("Send Data: %s\n", buffer);
-		write(c_socket, rcvBuffer, strlen(rcvBuffer));
-		printf("Send Data: %s\n", rcvBuffer);;
+		while(1){
+			memset(rcvBuffer, 0, BUFSIZE);
+			if((readSize = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
+               	 	return -1;
+        		}
+			printf("Received Data From Client: %s\n", rcvBuffer);
+			n = strlen(buffer);
+			sleep(SLEEPTIME);
+			//write(c_socket, buffer, n);
+			//printf("Send Data: %s\n", buffer);
+			write(c_socket, rcvBuffer, strlen(rcvBuffer));
+			printf("Send Data: %s\n", rcvBuffer);
+		}
 		close(c_socket);
 	}	
 	close(s_socket);

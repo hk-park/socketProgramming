@@ -6,7 +6,7 @@
 #define PORT 9000
 #define IPADDR "127.0.0.1"
 #define BUFSIZE 100
-#define SLEEPTIME 10 //단계별로 10초 쉬었다가 다음 단계로 이동하도록 설정
+#define SLEEPTIME 1 //단계별로 10초 쉬었다가 다음 단계로 이동하도록 설정
 main( )
 {
 	int	c_socket;
@@ -30,19 +30,21 @@ main( )
 	}
 	printf("Connected!!\n");
 	sleep(SLEEPTIME);
-	printf("Input your message\n");
-	//scanf("%s", sendBuffer);  //scanf는 공백 문자가 포함된 문자열을 인식하지 못하므로, scanf보다는 fgetsfmf 사용을 추천한다.
-	fgets(sendBuffer, BUFSIZE, stdin);
-	sendBuffer[strlen(sendBuffer)-1] = '\0';
-	write(c_socket, sendBuffer, strlen(sendBuffer));
-	printf("<%s> is sent.\n", sendBuffer);
-	if((n = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
-		return (-1);
-	}
+	while(1){
+		printf("Input your message\n");
+		//scanf("%s", sendBuffer);  //scanf는 공백 문자가 포함된 문자열을 인식하지 못하므로, scanf보다는 fgetsfmf 사용을 추천한다.
+		fgets(sendBuffer, BUFSIZE, stdin);
+		sendBuffer[strlen(sendBuffer)-1] = '\0';
+		write(c_socket, sendBuffer, strlen(sendBuffer));
+		printf("<%s> is sent.\n", sendBuffer);
+		if((n = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
+			return (-1);
+		}
 	
-	rcvBuffer[n] = '\0';
-	printf("received Data : %s\n", rcvBuffer);
-	printf("received Data Size: %d\n", strlen(rcvBuffer));	
+		rcvBuffer[n] = '\0';
+		printf("received Data : %s\n", rcvBuffer);
+		printf("received Data Size: %d\n", strlen(rcvBuffer));
+	}	
 	close(c_socket);
 }
 
