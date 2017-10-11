@@ -40,18 +40,28 @@ main( )
 		while(1){
 			memset(rcvBuffer, 0, BUFSIZE);
 			if((readSize = read(c_socket, rcvBuffer, sizeof(rcvBuffer))) < 0) {
-               	 	return -1;
+               	 		return -1;
         		}
 			printf("Received Data From Client: %s\n", rcvBuffer);
-			if(strncmp(rcvBuffer, "quit", 4) == 0){
+			if(strcasecmp(rcvBuffer, "quit") == 0){
 				break;
+			}else if(strcasecmp(rcvBuffer, "hello") == 0){
+				strcpy(buffer, "Hello, Nice to meet you");
+			}else if(strcasecmp(rcvBuffer, "how are you?") == 0){
+				strcpy(buffer, "Fine. Thank you. And you?");
+			}else if(strcasecmp(rcvBuffer, "What's your name?") == 0){
+				strcpy(buffer, "My name is hongkyu park.");
+			}else if(strcasecmp(rcvBuffer, "Do you like sports?") == 0){
+				strcpy(buffer, "Yes. I like soccer");
+			}else{
+				strcpy(buffer, "I don't understand what you say.");
 			}
 			n = strlen(buffer);
 			sleep(SLEEPTIME);
-			//write(c_socket, buffer, n);
-			//printf("Send Data: %s\n", buffer);
-			write(c_socket, rcvBuffer, strlen(rcvBuffer));
-			printf("Send Data: %s\n", rcvBuffer);
+			write(c_socket, buffer, n);
+			printf("Send Data: %s\n", buffer);
+			//write(c_socket, rcvBuffer, strlen(rcvBuffer));
+			//printf("Send Data: %s\n", rcvBuffer);
 		}
 		close(c_socket);
 	}	
