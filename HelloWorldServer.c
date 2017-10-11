@@ -60,6 +60,22 @@ main( )
 				token = strtok(NULL, " "); //token = 길이를 구하고자 하는 문자열
 				strcpy(tempBuf, token);
 				sprintf(buffer, "%s 문자열의 길이는 %d입니다.", tempBuf, strlen(tempBuf)); 				
+			}else if(strncasecmp(rcvBuffer, "strcmp", 6) == 0){
+				char str[3][BUFSIZE];
+				int i = 0;
+				token = strtok(rcvBuffer, " "); //token = strcmp
+				while(token != NULL){
+					strcpy(str[i], token);
+					i++;
+					token = strtok(NULL, " ");
+				}
+				if(strcasecmp(str[1], str[2])==0){
+					sprintf(buffer, "%s와 %s는 같은 문자열입니다.", str[1], str[2]);
+				}else{
+					sprintf(buffer, "%s와 %s는 다른 문자열입니다.", str[1], str[2]);
+				}
+					
+				
 			}else{
 				strcpy(buffer, "I don't understand what you say.");
 			}
