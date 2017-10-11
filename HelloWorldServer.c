@@ -16,6 +16,8 @@ main( )
 	int   len;
 	int   n;
 	int readSize;
+	char *token;
+	char tempBuf[BUFSIZE];
  	s_socket = socket(PF_INET, SOCK_STREAM, 0);
 	
 	memset(&s_addr, 0, sizeof(s_addr));
@@ -53,6 +55,11 @@ main( )
 				strcpy(buffer, "My name is hongkyu park.");
 			}else if(strcasecmp(rcvBuffer, "Do you like sports?") == 0){
 				strcpy(buffer, "Yes. I like soccer");
+			}else if(strncasecmp(rcvBuffer, "strlen", 6) == 0){
+				token = strtok(rcvBuffer, " "); //token = strlen
+				token = strtok(NULL, " "); //token = 길이를 구하고자 하는 문자열
+				strcpy(tempBuf, token);
+				sprintf(buffer, "%s 문자열의 길이는 %d입니다.", tempBuf, strlen(tempBuf)); 				
 			}else{
 				strcpy(buffer, "I don't understand what you say.");
 			}
