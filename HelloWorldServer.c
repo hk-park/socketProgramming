@@ -5,7 +5,7 @@
 #include <unistd.h>
  
 #define PORT 9000
-#define BUFSIZE 100
+#define BUFSIZE 10000
 #define SLEEPTIME 1
 char buffer[BUFSIZE] = "hello, I'm server";
 char rcvBuffer[BUFSIZE];
@@ -74,8 +74,16 @@ main( )
 				}else{
 					sprintf(buffer, "%s와 %s는 다른 문자열입니다.", str[1], str[2]);
 				}
-					
-				
+			}else if(strncasecmp(rcvBuffer, "readfile", 8) == 0){
+				token = strtok(rcvBuffer, " ");
+				token = strtok(NULL, " "); 
+				FILE *fp = fopen(token, "r");
+				char tempStr[BUFSIZE];
+				memset(buffer, 0, BUFSIZE);
+				while(fgets(tempStr, BUFSIZE, (FILE *)fp)){
+					strcat(buffer, tempStr);
+				}
+				fclose(fp);
 			}else{
 				strcpy(buffer, "I don't understand what you say.");
 			}

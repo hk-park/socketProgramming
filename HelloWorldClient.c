@@ -5,7 +5,7 @@
 #include <unistd.h> //sleep() 함수를 사용하기 위한 헤더 파일
 #define PORT 9000
 #define IPADDR "127.0.0.1"
-#define BUFSIZE 100
+#define BUFSIZE 10000
 #define SLEEPTIME 1 //단계별로 10초 쉬었다가 다음 단계로 이동하도록 설정
 main( )
 {
