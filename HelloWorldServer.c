@@ -3,6 +3,8 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <unistd.h>
+#include <dirent.h> 
+#include <stdlib.h> 
  
 #define PORT 9000
 #define BUFSIZE 10000
@@ -84,7 +86,35 @@ main( )
 					strcat(buffer, tempStr);
 				}
 				fclose(fp);
-			}else{
+			}else if(strcasecmp(rcvBuffer, "ls")==0){
+				DIR *dp;
+				struct dirent *dir;
+				int idx = 0;
+				if((dp=opendir(".")) == NULL){
+					printf("Directory open error\n");
+					return -1;
+				}
+				memset(buffer, 0, BUFSIZE);
+				while((dir = readdir(dp)) != NULL){
+					if(dir->d_ino == 0) continue;
+					sprintf(buffer, "%s\n[%d - %s]", buffer, idx++, dir->d_name);
+					//strcat(buffer, dir->d_name);
+				}
+				closedir(dp);
+			}else if(strncasecmp(rcvBuffer,"exec", 4)==0){
+				char *command;
+				token = strtok(rcvBuffer, " ");
+				command= strtok(NULL, "\0");
+				printf("command : %s\n", command);
+				int result = system(command);
+				printf("result: %d\n", result);
+				if(result){
+					sprintf(buffer, "[%s] command failed", command);
+				}else{
+					sprintf(buffer, "[%s] command is executed", command);
+				}
+				 
+			} else{
 				strcpy(buffer, "I don't understand what you say.");
 			}
 			n = strlen(buffer);
