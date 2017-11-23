@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <dirent.h> 
 #include <stdlib.h> 
+
+#include <signal.h>
+#include <sys/wait.h>
  
 #define PORT 9000
 #define BUFSIZE 10000
@@ -13,13 +16,14 @@ char buffer[BUFSIZE] = "hello, I'm server";
 char rcvBuffer[BUFSIZE];
 
 void do_service(int c_socket);
-
+void sig_handler();
 main( )
 {
 	int   c_socket, s_socket;
 	struct sockaddr_in s_addr, c_addr;
 	int   len;
 	int pid;
+	signal(SIGCHLD, sig_handler);
  	s_socket = socket(PF_INET, SOCK_STREAM, 0);
 	
 	memset(&s_addr, 0, sizeof(s_addr));
@@ -145,4 +149,10 @@ void do_service(int c_socket){
 		//printf("Send Data: %s\n", rcvBuffer);
 	}
 	close(c_socket);
+}
+void sig_handler(int signo){
+	int pid;
+	int status;
+	pid = wait(&status);
+	printf("pid[%d] terminated. status = %d\n", pid, status);
 }
