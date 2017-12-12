@@ -11,6 +11,9 @@
 #define CHATDATA 1024
 #define IPADDR "127.0.0.1"
 #define PORT 9000
+#define WHISPER "/w"
+#define DELIMETER " "
+
 void *do_send_chat(void *);
 void *do_receive_chat(void *);
 pthread_t thread_1, thread_2;
@@ -39,6 +42,7 @@ int main(int argc, char *argv[ ])
 		printf("Can not connect\n");
 		return -1;
 	}
+	write(c_socket, nickname, strlen(nickname));	
 	pthread_create(&thread_1, NULL, do_send_chat, (void *) &c_socket);
 	pthread_create(&thread_2, NULL, do_receive_chat, (void *) &c_socket);
 	pthread_join(thread_1, NULL);
@@ -54,7 +58,23 @@ void * do_send_chat(void *arg)
 	while(1) {
 		memset(buf, 0, sizeof(buf));
 		if((n = read(0, buf, sizeof(buf))) > 0 ) {
-			sprintf(chatData, "[%s] %s", nickname, buf);
+			char *token = NULL;
+			char *toNickname = NULL;
+			char *message = NULL;
+			if(strncasecmp(buf, WHISPER, 2) == 0){
+				token = strtok(buf, DELIMETER);
+				if(token != NULL)
+					toNickname = strtok(NULL, DELIMETER);
+				if(toNickname != NULL)
+					message = strtok(NULL, "\0");
+				if(token == NULL || toNickname == NULL || message ==  NULL){
+					printf("Your whisper message is wrong. Please input '/w nickname message'\n");
+					continue;
+				}
+				sprintf(chatData, "%s %s [%s] %s", token, toNickname, nickname, message);
+			}else{ 
+				sprintf(chatData, "[%s] %s", nickname, buf);
+			}
 			write(c_socket, chatData, strlen(chatData));
 			if(!strncmp(buf, escape, strlen(escape))) {
 				pthread_kill(thread_2, SIGINT);
