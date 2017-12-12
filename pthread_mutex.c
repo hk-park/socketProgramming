@@ -41,9 +41,9 @@ int main( )
 	int	status;
 	int	a ;
 	ncount = 1;
-	a = 9;
+	a = 3;
 	thr_id = pthread_create(&p_thread[0], NULL, do_sum1, (void *) &a);
-	//sleep(1);
+	sleep(1);
 	a = 10;
 	thr_id = pthread_create(&p_thread[1], NULL, do_sum2, (void *) &a);
 	pthread_join(p_thread[0], (void **) &status);

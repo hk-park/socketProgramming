@@ -12,7 +12,7 @@ main(int argc, char **argv){
 
 	if((sts = pthread_create(&thread_id, NULL, func_pthread, NULL)) != 0 ) {
 		perror("pthread create error\n");
-		exit(1);
+		return -1;
 	}
 	printf("thread %x is created\n", thread_id);
 	sleep(3);

@@ -27,9 +27,9 @@ int main( )
 	thr_id = pthread_create(&p_thread[0], NULL, do_sum, (void *)&a);
 	thr_id = pthread_create(&p_thread[1], NULL, do_sum, (void *)&b);
 	thr_id = pthread_create(&p_thread[2], NULL, do_sum, (void *)&c);
-	pthread_join(p_thread[0], (void **) &status);
-	pthread_join(p_thread[1], (void **) &status);
-	pthread_join(p_thread[2], (void **) &status);
+	//pthread_join(p_thread[0], (void **) &status);
+	//pthread_join(p_thread[1], (void **) &status);
+	//pthread_join(p_thread[2], (void **) &status);
 	printf("programing is end\n");
 	return 0;
 }
